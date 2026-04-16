@@ -1,0 +1,10 @@
+wing: kiro_mempalace
+rooms:
+- name: steering
+  description: Files from steering/
+  keywords:
+  - steering
+  - steering
+- name: general
+  description: Files that don't fit other rooms
+  keywords: []
