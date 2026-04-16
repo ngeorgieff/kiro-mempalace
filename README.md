@@ -1,5 +1,6 @@
 # kiro-mempalace
 
+
 Persistent AI memory for [Kiro IDE and CLI](https://kiro.dev), powered by [MemPalace](https://github.com/MemPalace/mempalace).
 
 Installs globally — works in every project without per-project setup.

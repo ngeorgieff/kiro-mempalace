@@ -61,11 +61,7 @@ cp "${SCRIPT_DIR}/hooks.json"                    "${POWER_DIR}/hooks.json"
 cp "${SCRIPT_DIR}/steering/on-session-start.md"  "${POWER_DIR}/steering/on-session-start.md"
 cp "${SCRIPT_DIR}/steering/on-session-end.md"    "${POWER_DIR}/steering/on-session-end.md"
 
-# ── 5. Patch python path into Power mcp.json ────────────────────────────────
-sed -i.bak "s|\"python3\"|\"${PYTHON_BIN}\"|g" "${POWER_DIR}/mcp.json" && \
-  rm -f "${POWER_DIR}/mcp.json.bak"
-
-# ── 6. Register in global Kiro MCP config ────────────────────────────────────
+# ── 5. Register in global Kiro MCP config ────────────────────────────────────
 mkdir -p "$(dirname "${KIRO_MCP_CONFIG}")"
 
 if [[ ! -f "${KIRO_MCP_CONFIG}" ]]; then
@@ -77,22 +73,18 @@ EOF
 fi
 
 # Inject mempalace entry using Python (avoids jq dependency)
+# Uses uvx so the config is portable across machines — no hardcoded paths.
 "${PYTHON_BIN}" - <<PYEOF
-import json, sys, os
+import json, os
 
 config_path = os.path.expanduser("${KIRO_MCP_CONFIG}")
-mempalace_home = os.path.expanduser("${MEMPALACE_HOME}")
-python_bin = "${PYTHON_BIN}"
 
 with open(config_path) as f:
     config = json.load(f)
 
 config.setdefault("mcpServers", {})["mempalace"] = {
-    "command": python_bin,
-    "args": ["-m", "mempalace.mcp_server"],
-    "env": {
-        "MEMPALACE_HOME": mempalace_home
-    }
+    "command": "uvx",
+    "args": ["--from", "mempalace", "python", "-m", "mempalace.mcp_server"]
 }
 
 with open(config_path, "w") as f:

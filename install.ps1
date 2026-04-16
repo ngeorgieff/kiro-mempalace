@@ -62,10 +62,7 @@ Copy-Item "$SCRIPT_DIR\hooks.json"                   "$POWER_DIR\hooks.json"    
 Copy-Item "$SCRIPT_DIR\steering\on-session-start.md" "$POWER_DIR\steering\on-session-start.md" -Force
 Copy-Item "$SCRIPT_DIR\steering\on-session-end.md"   "$POWER_DIR\steering\on-session-end.md"   -Force
 
-# Patch python path into Power mcp.json
-$powerMcp = Get-Content "$POWER_DIR\mcp.json" | ConvertFrom-Json
-$powerMcp.mcpServers.mempalace.command = $PYTHON_BIN
-$powerMcp | ConvertTo-Json -Depth 10 | Set-Content "$POWER_DIR\mcp.json"
+# Patch python path into Power mcp.json — not needed, mcp.json uses uvx
 
 # ── 5. Register in global Kiro MCP config ────────────────────────────────────
 $kiroSettingsDir = Split-Path $KIRO_MCP_CONFIG
@@ -78,10 +75,10 @@ if (-not (Test-Path $KIRO_MCP_CONFIG)) {
 $config = Get-Content $KIRO_MCP_CONFIG | ConvertFrom-Json
 if (-not $config.mcpServers) { $config | Add-Member -NotePropertyName mcpServers -NotePropertyValue @{} }
 
+# Use uvx so the config is portable across machines — no hardcoded paths.
 $config.mcpServers | Add-Member -NotePropertyName mempalace -NotePropertyValue @{
-    command = $PYTHON_BIN
-    args    = @("-m", "mempalace.mcp_server")
-    env     = @{ MEMPALACE_HOME = $MEMPALACE_HOME }
+    command = "uvx"
+    args    = @("--from", "mempalace", "python", "-m", "mempalace.mcp_server")
 } -Force
 
 $config | ConvertTo-Json -Depth 10 | Set-Content $KIRO_MCP_CONFIG
