@@ -10,6 +10,9 @@ chroma/
 .DS_Store
 Thumbs.db
 
+# Claude worktrees / settings
+.claude/
+
 # Kiro local settings
 .kiro/settings/
 
