@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "mempalace": {
+      "command": "uvx",
+      "args": ["--from", "mempalace", "python", "-m", "mempalace.mcp_server"],
+      "env": {
+        "MEMPALACE_PALACE_PATH": "${PALACE_PATH}"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "mempalace_status",
+        "mempalace_list_wings",
+        "mempalace_list_rooms",
+        "mempalace_search",
+        "mempalace_get_taxonomy",
+        "mempalace_get_aaak_spec",
+        "mempalace_kg_query",
+        "mempalace_kg_timeline",
+        "mempalace_diary_read"
+      ]
+    }
+  }
+}
