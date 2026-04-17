@@ -41,7 +41,7 @@ info "uv found: $(uv --version)"
 
 # ── 2. Install mempalace ─────────────────────────────────────────────────────
 info "Installing mempalace..."
-uv tool install mempalace --upgrade
+uv tool install mempalace --upgrade --force
 
 # Resolve the python used by the uv-managed mempalace env
 PYTHON_BIN="$(uv tool run --from mempalace python3 -c 'import sys; print(sys.executable)' 2>/dev/null || true)"
