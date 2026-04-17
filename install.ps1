@@ -8,10 +8,21 @@ $POWER_DIR     = "$env:USERPROFILE\.kiro\powers\mempalace"
 $KIRO_MCP_CONFIG = "$env:USERPROFILE\.kiro\settings\mcp.json"
 $MEMPALACE_HOME  = "$env:USERPROFILE\.mempalace"
 $SCRIPT_DIR    = $PSScriptRoot
+$BACKUP_SUFFIX = ".bak.$(Get-Date -Format 'yyyyMMdd_HHmmss')"
 
 function Info  { param($msg) Write-Host "[kiro-mempalace] $msg" -ForegroundColor Green }
 function Warn  { param($msg) Write-Host "[kiro-mempalace] $msg" -ForegroundColor Yellow }
 function Fail  { param($msg) Write-Host "[kiro-mempalace] ERROR: $msg" -ForegroundColor Red; exit 1 }
+
+# Back up a file if it exists; no-op otherwise
+function Backup-File {
+    param($Path)
+    if (Test-Path $Path) {
+        $dest = "$Path$BACKUP_SUFFIX"
+        Copy-Item $Path $dest -Force
+        Info "Backed up $Path → $dest"
+    }
+}
 
 # ── 1. Check / install uv ────────────────────────────────────────────────────
 if (-not (Get-Command uv -ErrorAction SilentlyContinue)) {
@@ -56,6 +67,12 @@ try { & $PYTHON_BIN -m mempalace.cli init $MEMPALACE_HOME 2>$null } catch {}
 Info "Installing Kiro Power to $POWER_DIR..."
 New-Item -ItemType Directory -Force -Path "$POWER_DIR\steering" | Out-Null
 
+# Back up existing Power files before overwriting
+foreach ($f in @("$POWER_DIR\POWER.md", "$POWER_DIR\mcp.json", "$POWER_DIR\hooks.json",
+                 "$POWER_DIR\steering\on-session-start.md", "$POWER_DIR\steering\on-session-end.md")) {
+    Backup-File $f
+}
+
 Copy-Item "$SCRIPT_DIR\POWER.md"                     "$POWER_DIR\POWER.md"         -Force
 Copy-Item "$SCRIPT_DIR\mcp.json"                     "$POWER_DIR\mcp.json"         -Force
 Copy-Item "$SCRIPT_DIR\hooks.json"                   "$POWER_DIR\hooks.json"       -Force
@@ -67,6 +84,9 @@ Copy-Item "$SCRIPT_DIR\steering\on-session-end.md"   "$POWER_DIR\steering\on-ses
 # ── 5. Register in global Kiro MCP config ────────────────────────────────────
 $kiroSettingsDir = Split-Path $KIRO_MCP_CONFIG
 New-Item -ItemType Directory -Force -Path $kiroSettingsDir | Out-Null
+
+# Back up existing global MCP config before modifying
+Backup-File $KIRO_MCP_CONFIG
 
 if (-not (Test-Path $KIRO_MCP_CONFIG)) {
     '{"mcpServers":{}}' | Set-Content $KIRO_MCP_CONFIG
