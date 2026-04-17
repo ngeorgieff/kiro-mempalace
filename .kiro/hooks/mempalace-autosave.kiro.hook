@@ -1,0 +1,12 @@
+{
+  "name": "Save to MemPalace",
+  "version": "1.0.0",
+  "description": "Manually trigger saving the current session's decisions and context to MemPalace via mempalace_add_drawer",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "The user wants to save this session's context to MemPalace. Please: 1) Summarize the key decisions, changes, and context from this session. 2) Call mempalace_add_drawer with wing set to the current workspace name (use basename of the working directory), room set to the most appropriate topic area (e.g. 'decisions', 'config', 'bugs', 'architecture'), and content set to the verbatim summary. 3) Wait for user approval before executing the write."
+  }
+}
