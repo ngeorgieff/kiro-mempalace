@@ -7,6 +7,7 @@ set -euo pipefail
 POWER_DIR="${HOME}/.kiro/powers/mempalace"
 KIRO_MCP_CONFIG="${HOME}/.kiro/settings/mcp.json"
 MEMPALACE_HOME="${HOME}/.mempalace"
+BACKUP_SUFFIX=".bak.$(date +%Y%m%d_%H%M%S)"
 
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -16,6 +17,15 @@ NC='\033[0m'
 info()    { echo -e "${GREEN}[kiro-mempalace]${NC} $1"; }
 warn()    { echo -e "${YELLOW}[kiro-mempalace]${NC} $1"; }
 error()   { echo -e "${RED}[kiro-mempalace]${NC} $1"; exit 1; }
+
+# Back up a file if it exists; no-op otherwise
+backup_file() {
+  local f="$1"
+  if [[ -f "${f}" ]]; then
+    cp "${f}" "${f}${BACKUP_SUFFIX}"
+    info "Backed up ${f} → ${f}${BACKUP_SUFFIX}"
+  fi
+}
 
 # ── 1. Check / install uv ────────────────────────────────────────────────────
 if ! command -v uv &>/dev/null; then
@@ -55,6 +65,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 info "Installing Kiro Power to ${POWER_DIR}..."
 mkdir -p "${POWER_DIR}/steering"
 
+# Back up existing Power files before overwriting
+for f in "${POWER_DIR}/POWER.md" "${POWER_DIR}/mcp.json" "${POWER_DIR}/hooks.json" \
+         "${POWER_DIR}/steering/on-session-start.md" "${POWER_DIR}/steering/on-session-end.md"; do
+  backup_file "${f}"
+done
+
 cp "${SCRIPT_DIR}/POWER.md"                      "${POWER_DIR}/POWER.md"
 cp "${SCRIPT_DIR}/mcp.json"                      "${POWER_DIR}/mcp.json"
 cp "${SCRIPT_DIR}/hooks.json"                    "${POWER_DIR}/hooks.json"
@@ -63,6 +79,9 @@ cp "${SCRIPT_DIR}/steering/on-session-end.md"    "${POWER_DIR}/steering/on-sessi
 
 # ── 5. Register in global Kiro MCP config ────────────────────────────────────
 mkdir -p "$(dirname "${KIRO_MCP_CONFIG}")"
+
+# Back up existing global MCP config before modifying
+backup_file "${KIRO_MCP_CONFIG}"
 
 if [[ ! -f "${KIRO_MCP_CONFIG}" ]]; then
   cat > "${KIRO_MCP_CONFIG}" <<EOF
