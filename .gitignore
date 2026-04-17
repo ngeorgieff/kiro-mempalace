@@ -1,0 +1,19 @@
+# ChromaDB / MemPalace data (created when PALACE_PATH is unresolved)
+${PALACE_PATH}/
+*.sqlite3
+
+# ChromaDB data directories (HNSW index files)
+chroma.sqlite3
+chroma/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Kiro local settings
+.kiro/settings/
+
+# Editor
+*.swp
+*.swo
+*~

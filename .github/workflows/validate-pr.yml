@@ -1,0 +1,49 @@
+name: Validate PR
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate power structure
+        run: |
+          echo "Checking required files..."
+          test -f powers/mempalace/POWER.md || (echo "❌ Missing POWER.md" && exit 1)
+          test -f powers/mempalace/mcp.json || (echo "❌ Missing mcp.json" && exit 1)
+          echo "✅ Required files present"
+
+      - name: Validate JSON files
+        run: |
+          for f in powers/mempalace/mcp.json mcp.json; do
+            if [ -f "$f" ]; then
+              python3 -c "import json; json.load(open('$f')); print('✅ $f valid')"
+            fi
+          done
+
+      - name: Validate POWER.md frontmatter
+        run: |
+          python3 -c "
+          import re, sys
+          content = open('powers/mempalace/POWER.md').read()
+          fm = re.search(r'^---\n(.*?)\n---', content, re.DOTALL)
+          if not fm:
+              print('❌ No frontmatter found'); sys.exit(1)
+          required = ['name:', 'displayName:', 'description:']
+          missing = [f for f in required if f not in fm.group(1)]
+          if missing:
+              print(f'❌ Missing frontmatter fields: {missing}'); sys.exit(1)
+          print('✅ Frontmatter valid')
+          "
+
+      - name: Check for broken PALACE_PATH references
+        run: |
+          if grep -r '\${PALACE_PATH}' --include='*.json' --include='*.md' --include='*.yaml' . 2>/dev/null | grep -v '.gitignore' | grep -v '.git/'; then
+            echo "❌ Found unresolved \${PALACE_PATH} references"
+            exit 1
+          fi
+          echo "✅ No broken PALACE_PATH references"
