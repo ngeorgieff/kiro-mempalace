@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Update README",
+  "description": "When the agent stops after making changes, review if the README.md needs updating to reflect the current state of the project (install steps, file structure, config examples, features).",
+  "version": "1",
+  "when": {
+    "type": "agentStop"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Check if any changes made in this session affect the README.md. Compare the current README against the actual project state — look for outdated install instructions, wrong file paths, incorrect config examples, missing features, or stale file structure references. If the README needs updates, make them. If it's already accurate, do nothing. Be concise — only update what's actually wrong or missing."
+  }
+}
