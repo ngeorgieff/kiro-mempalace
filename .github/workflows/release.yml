@@ -7,14 +7,11 @@ on:
 permissions:
   contents: write
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Validate power structure
         run: |
@@ -44,10 +41,9 @@ jobs:
     needs: validate
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          persist-credentials: true
 
       - name: Bump version and create tag
         id: tag
