@@ -1,23 +1,49 @@
 # Changelog
 
-## [Unreleased] — 2026-04-17
+All notable changes to this project will be documented in this file.
+Format based on [Keep a Changelog](https://keepachangelog.com/). Versioning follows [Conventional Commits](https://www.conventionalcommits.org/) via GitHub Actions.
+
+## [Unreleased]
+
+### Changed
+- Removed stale root-level files: `POWER.md`, `hooks.json`, `entities.json`, `mempalace.yaml`, `steering/`, `CHANGELOG.md`
+- Updated `install.sh` to copy from `powers/mempalace/` instead of deleted root files
+- Rewrote `README.md` to match current project state
+- Renamed power MCP server key from `mempalace` to `server` (avoids `power-mempalace-mempalace` naming)
 
 ### Added
+- `update-readme` agent hook — auto-checks README freshness on agent stop
 
-#### MemPalace Kiro Power (`powers/mempalace/`)
-- `POWER.md` — Full power documentation: onboarding, tool reference, AAAK format guide, troubleshooting, and best practices
-- `mcp.json` — MCP server registration with read-only tools auto-approved, write tools requiring user confirmation
-- `steering/session-workflow.md` — Session start/mid/end workflow guide for agent memory usage
-- `steering/scope-setup.md` — Global vs workspace scope configuration guide
+## [v0.0.2] — 2026-04-17
 
-#### Integration Spec (`.kiro/specs/mempalace-integration/`)
-- `requirements.md` — EARS-format requirements covering MCP wiring, steering behavior, scope model, and hook triggers
-- `design.md` — Architecture document: MCP wiring diagram, scope model, hook flow, setup script flow
-- `tasks.md` — Ordered task checklist for deploying the integration to other workspaces
+### Added
+- GitHub Actions CI/CD: `release.yml` (auto-tag + release on push to main) and `validate-pr.yml` (structure/JSON/frontmatter validation)
+- `.gitignore` for ChromaDB artifacts, OS files, `.claude/`, local Kiro settings
+- `mempalace-autosave` Kiro hook — manual "Save to MemPalace" button
 
-#### Steering Rules (`.kiro/steering/`)
-- `mempalace-usage.md` — Always-on steering: session-start context loading, memory-dependent search, decision capture, AAAK awareness, wing+room filtering
-- `mempalace-scope.md` — FileMatch steering on `mcp.json`: documents global vs workspace scope model and toggle mechanism
+### Fixed
+- Replaced all `${PALACE_PATH}` references with `~/.mempalace` across configs, docs, and steering
+- Auto-approved all 29 mempalace MCP tools in power config
+- Removed `.claude/worktrees/loving-elion` git worktree causing CI and IDE errors
+- Pinned `actions/checkout@v4.2.2` with `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24` to avoid Node.js 20 deprecation and Post Run cleanup bugs
+- Updated `POWER.md` default palace path from `~/.palace/` to `~/.mempalace/`
+- Fixed `install.sh` to include `MEMPALACE_PALACE_PATH` env var in global MCP config
 
-#### Agent Hook (`.kiro/hooks/`)
-- `mempalace-autosave.kiro.hook` — Manual "Save to MemPalace" button that triggers agent to summarize session decisions and call `mempalace_add_drawer`
+## [v0.0.1] — 2026-04-16
+
+### Added
+- Kiro Power: `powers/mempalace/` with `POWER.md`, `mcp.json`, and steering files (`scope-setup.md`, `session-workflow.md`)
+- Integration spec: `.kiro/specs/mempalace-integration/` (requirements, design, tasks)
+- Workspace steering: `mempalace-usage.md` (always-on) and `mempalace-scope.md` (fileMatch on mcp.json)
+- Config backup support in `install.sh` and `install.ps1`
+- `uninstall.sh` and `uninstall.ps1` scripts
+
+### Changed
+- Switched MCP server command from `python3` to `uvx` for portability
+- Removed `MEMPALACE_HOME` env var, replaced with `MEMPALACE_PALACE_PATH`
+- Removed sed-based mcp.json patching from installers
+
+## [v0.0.0] — 2026-04-15
+
+### Added
+- Initial project: `install.sh`, `install.ps1`, root `POWER.md`, `mcp.json`, `hooks.json`, `steering/`

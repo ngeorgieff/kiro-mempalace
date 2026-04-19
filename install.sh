@@ -66,16 +66,17 @@ info "Installing Kiro Power to ${POWER_DIR}..."
 mkdir -p "${POWER_DIR}/steering"
 
 # Back up existing Power files before overwriting
-for f in "${POWER_DIR}/POWER.md" "${POWER_DIR}/mcp.json" "${POWER_DIR}/hooks.json" \
-         "${POWER_DIR}/steering/on-session-start.md" "${POWER_DIR}/steering/on-session-end.md"; do
+for f in "${POWER_DIR}/POWER.md" "${POWER_DIR}/mcp.json" \
+         "${POWER_DIR}/steering/scope-setup.md" "${POWER_DIR}/steering/session-workflow.md"; do
   backup_file "${f}"
 done
 
-cp "${SCRIPT_DIR}/POWER.md"                      "${POWER_DIR}/POWER.md"
-cp "${SCRIPT_DIR}/mcp.json"                      "${POWER_DIR}/mcp.json"
-cp "${SCRIPT_DIR}/hooks.json"                    "${POWER_DIR}/hooks.json"
-cp "${SCRIPT_DIR}/steering/on-session-start.md"  "${POWER_DIR}/steering/on-session-start.md"
-cp "${SCRIPT_DIR}/steering/on-session-end.md"    "${POWER_DIR}/steering/on-session-end.md"
+cp "${SCRIPT_DIR}/powers/mempalace/POWER.md"                      "${POWER_DIR}/POWER.md"
+cp "${SCRIPT_DIR}/powers/mempalace/mcp.json"                      "${POWER_DIR}/mcp.json"
+
+if [[ -d "${SCRIPT_DIR}/powers/mempalace/steering" ]]; then
+  cp "${SCRIPT_DIR}/powers/mempalace/steering/"*.md  "${POWER_DIR}/steering/" 2>/dev/null || true
+fi
 
 # ── 5. Register in global Kiro MCP config ────────────────────────────────────
 mkdir -p "$(dirname "${KIRO_MCP_CONFIG}")"
