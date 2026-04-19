@@ -3,9 +3,7 @@
     "mempalace": {
       "command": "uvx",
       "args": ["--from", "mempalace", "python", "-m", "mempalace.mcp_server"],
-      "env": {
-        "MEMPALACE_PALACE_PATH": "~/.mempalace"
-      },
+      "env": {},
       "disabled": false,
       "autoApprove": [
         "mempalace_status",

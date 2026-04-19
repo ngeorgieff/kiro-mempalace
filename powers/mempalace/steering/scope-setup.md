@@ -45,9 +45,7 @@ If you prefer to configure manually, add this to the appropriate `mcp.json`:
     "mempalace": {
       "command": "uvx",
       "args": ["--from", "mempalace", "python", "-m", "mempalace.mcp_server"],
-      "env": {
-        "MEMPALACE_PALACE_PATH": "~/.mempalace"
-      },
+      "env": {},
       "disabled": false,
       "autoApprove": [
         "mempalace_status",
@@ -70,4 +68,4 @@ If you prefer to configure manually, add this to the appropriate `mcp.json`:
 - Only have the `mempalace` entry in ONE scope at a time to avoid conflicts
 - Workspace-level config takes precedence over global in Kiro's merge rules
 - Write tools are never auto-approved regardless of scope
-- The `MEMPALACE_PALACE_PATH` env var is optional — defaults to `~/.mempalace/`
+- The `MEMPALACE_PALACE_PATH` env var is optional — defaults to `~/.mempalace/palace/`

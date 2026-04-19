@@ -104,10 +104,7 @@ with open(config_path) as f:
 
 config.setdefault("mcpServers", {})["mempalace"] = {
     "command": "uvx",
-    "args": ["--from", "mempalace", "python", "-m", "mempalace.mcp_server"],
-    "env": {
-        "MEMPALACE_PALACE_PATH": "~/.mempalace"
-    }
+    "args": ["--from", "mempalace", "python", "-m", "mempalace.mcp_server"]
 }
 
 with open(config_path, "w") as f:

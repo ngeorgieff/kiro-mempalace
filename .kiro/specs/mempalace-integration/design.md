@@ -44,7 +44,7 @@ The MemPalace MCP server runs as a stdio subprocess managed by Kiro's built-in M
       "command": "python",
       "args": ["-m", "mempalace.mcp_server"],
       "env": {
-        "MEMPALACE_PALACE_PATH": "~/.mempalace"
+        "MEMPALACE_PALACE_PATH": "~/.mempalace/palace"
       },
       "disabled": false,
       "autoApprove": [

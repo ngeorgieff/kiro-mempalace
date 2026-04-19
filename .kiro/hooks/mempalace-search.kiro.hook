@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "MemPalace Search",
+  "description": "Search MemPalace memory for past decisions, context, and knowledge. Triggered manually via /mempalace-search in chat.",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "The user wants to search MemPalace. Ask them what they're looking for if they didn't include a query. Then call mempalace_search with their query. If results are found, summarize them concisely. If no results from MCP, fall back to running `mempalace search \"<query>\"` via shell as the CLI may have access to additional data. Always show which wing/room the results came from."
+  }
+}

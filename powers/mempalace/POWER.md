@@ -49,11 +49,11 @@ mempalace --version
 mempalace init
 ```
 
-This creates the palace database at `~/.mempalace/` (default). You can override with `MEMPALACE_PALACE_PATH` env var.
+This creates the palace database at `~/.mempalace/palace/` (default). You can override with `MEMPALACE_PALACE_PATH` env var.
 
 ### Configuration
 
-The MCP server is configured automatically when this power is installed. The `MEMPALACE_PALACE_PATH` environment variable controls where the palace database lives. If unset, it defaults to `~/.mempalace/`.
+The MCP server is configured automatically when this power is installed. The `MEMPALACE_PALACE_PATH` environment variable controls where the palace database lives. If unset, it defaults to `~/.mempalace/palace/`.
 
 To use a custom path, edit the `env` section in the MCP config:
 ```json

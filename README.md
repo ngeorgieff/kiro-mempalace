@@ -92,10 +92,7 @@ mempalace init ~/.mempalace
   "mcpServers": {
     "mempalace": {
       "command": "uvx",
-      "args": ["--from", "mempalace", "python", "-m", "mempalace.mcp_server"],
-      "env": {
-        "MEMPALACE_PALACE_PATH": "~/.mempalace"
-      }
+      "args": ["--from", "mempalace", "python", "-m", "mempalace.mcp_server"]
     }
   }
 }
@@ -122,7 +119,7 @@ By default, all projects share one memory palace at `~/.mempalace`. To isolate m
       "command": "uvx",
       "args": ["--from", "mempalace", "python", "-m", "mempalace.mcp_server"],
       "env": {
-        "MEMPALACE_PALACE_PATH": "/path/to/project/.mempalace"
+        "MEMPALACE_PALACE_PATH": "/path/to/project/.mempalace/palace"
       }
     }
   }

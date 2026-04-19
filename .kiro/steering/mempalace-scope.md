@@ -46,7 +46,7 @@ The `mempalace` server entry uses this format:
     "command": "python",
     "args": ["-m", "mempalace.mcp_server"],
     "env": {
-      "MEMPALACE_PALACE_PATH": "~/.mempalace"
+      "MEMPALACE_PALACE_PATH": "~/.mempalace/palace"
     },
     "disabled": false,
     "autoApprove": [
