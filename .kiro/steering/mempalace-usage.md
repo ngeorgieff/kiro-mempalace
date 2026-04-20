@@ -8,12 +8,25 @@ This steering file instructs the Kiro agent on when and how to use MemPalace too
 
 ## Session Start — Load Context (L0 + L1)
 
-On every new session, immediately call these two tools to orient yourself:
+On every new session (first message), immediately call these two tools to orient yourself:
 
 1. `mempalace_status` — get palace overview (total drawers, wings, rooms)
 2. `mempalace_list_wings` — get all wings with drawer counts
 
 This gives you L0 (palace exists, rough size) and L1 (which projects/topics have memory). Use this to understand what the user has been working on.
+
+**This is enforced by the `mempalace-auto-context` promptSubmit hook** — it fires on every message and reminds you to load context on the first message and search memory on subsequent ones.
+
+## Proactive Memory Search — Every Message
+
+On EVERY user message (not just memory-dependent ones), you should:
+
+1. Extract 2-4 keywords from the user's query
+2. Determine if those keywords could match anything in the palace
+3. If yes, call `mempalace_search` with wing filter and max_distance=0.8
+4. Weave relevant results into your response naturally
+
+This ensures past context is always surfaced without the user needing to explicitly ask "what did we decide about X". The goal is seamless continuity across sessions.
 
 ## Before Answering Memory-Dependent Questions
 
