@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "MemPalace Auto Context",
+  "description": "Automatically searches MemPalace memory on every prompt to provide relevant past context. Loads session context on first message and searches for relevant memories on subsequent messages.",
+  "version": "1",
+  "when": {
+    "type": "promptSubmit"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Before responding to the user's message, check if this is the first message in the session. If it is, call mempalace_status and mempalace_list_wings to load palace context. Then, regardless of whether it's the first message, analyze the user's query for keywords related to past work, decisions, or context. If the query references anything that might exist in memory (project names, technical decisions, past discussions, bugs, configurations), call mempalace_search with: query set to 2-4 relevant keywords extracted from their message, limit=3, max_distance=0.8, and wing filter set to the current workspace name if it matches a known wing. Incorporate any relevant results naturally into your response without echoing raw content. If no relevant memory exists, proceed normally without mentioning the search."
+  }
+}
