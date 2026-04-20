@@ -1,13 +1,13 @@
 {
   "enabled": true,
   "name": "MemPalace Search",
-  "description": "Search MemPalace memory for past decisions, context, and knowledge. Triggered manually via /mempalace-search in chat.",
-  "version": "1",
+  "version": "1.0.0",
+  "description": "Search MemPalace memory for past decisions, context, and knowledge. Equivalent to /mempalace:search.",
   "when": {
     "type": "userTriggered"
   },
   "then": {
     "type": "askAgent",
-    "prompt": "The user wants to search MemPalace. Ask them what they're looking for if they didn't include a query. Call mempalace_search with: limit=3, max_distance=0.8, and wing filter if the project is known. Summarize results concisely — extract key facts, don't echo raw drawer content. Show wing/room for each result. If MCP returns 0 relevant results, fall back to `mempalace search \"<query>\"` via shell."
+    "prompt": "The user wants to search MemPalace. Ask them what they're looking for if they didn't include a query. Then get dynamic instructions by running: mempalace instructions search. Use those instructions alongside the MCP tools. Call mempalace_search with: limit=3, max_distance=0.8, and wing filter if the project is known. Summarize results concisely — extract key facts, don't echo raw drawer content. Show wing/room for each result. If MCP returns 0 relevant results, fall back to running 'mempalace search \"<query>\"' via shell."
   }
 }

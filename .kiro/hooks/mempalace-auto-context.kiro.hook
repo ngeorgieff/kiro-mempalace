@@ -1,8 +1,8 @@
 {
   "enabled": true,
   "name": "MemPalace Auto Context",
-  "description": "Automatically searches MemPalace memory on every prompt to provide relevant past context. Loads session context on first message and searches for relevant memories on subsequent messages.",
-  "version": "1",
+  "version": "1.0.0",
+  "description": "Automatically loads palace context on session start and searches memory for relevant past context on every message. Mirrors the Claude plugin's implicit context-loading behavior.",
   "when": {
     "type": "promptSubmit"
   },

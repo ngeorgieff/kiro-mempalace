@@ -1,0 +1,12 @@
+{
+  "name": "MemPalace Mine",
+  "version": "1.0.0",
+  "description": "Mine projects and conversations into the MemPalace. Indexes files with auto-classification into wings and rooms. Equivalent to /mempalace:mine.",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "The user wants to mine content into MemPalace. Get dynamic instructions by running: mempalace instructions mine. Then follow those instructions step by step. If the user specified a path, use it. Otherwise, default to the current workspace directory. The mine command indexes project files and conversation exports into the palace with auto-classification into wings (project name) and rooms (topic areas). Report progress and results when complete."
+  }
+}

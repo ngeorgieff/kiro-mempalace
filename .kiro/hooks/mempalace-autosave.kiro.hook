@@ -1,12 +1,12 @@
 {
-  "name": "Save to MemPalace",
+  "name": "MemPalace Auto-Save",
   "version": "1.0.0",
-  "description": "Manually trigger saving the current session's decisions and context to MemPalace via mempalace_add_drawer",
+  "description": "Automatically saves session context to MemPalace when the agent stops, mirroring the Claude plugin's Stop hook. Summarizes decisions and writes a diary entry.",
   "when": {
-    "type": "userTriggered"
+    "type": "agentStop"
   },
   "then": {
     "type": "askAgent",
-    "prompt": "The user wants to save this session's context to MemPalace. Please: 1) Summarize the key decisions, changes, and context from this session. 2) Call mempalace_add_drawer with wing set to the current workspace name (use basename of the working directory), room set to the most appropriate topic area (e.g. 'decisions', 'config', 'bugs', 'architecture'), and content set to the verbatim summary. 3) Wait for user approval before executing the write."
+    "prompt": "The session is ending. Review the conversation for significant decisions, bug fixes, config changes, architecture choices, or trade-offs discussed. If anything significant happened: 1) Call mempalace_add_drawer with wing set to the workspace basename (lowercase, hyphenated), room set to the appropriate topic (decisions, bugs, config, architecture, etc.), and content set to a concise summary of the key context. 2) Call mempalace_diary_write with agent_name='kiro' and a brief AAAK-format session entry summarizing what was accomplished. If nothing significant happened in this session, skip saving entirely — do not save trivial exchanges."
   }
 }

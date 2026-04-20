@@ -77,6 +77,37 @@ mempalace_add_drawer(
 )
 ```
 
+## Session End — Auto-Save via agentStop Hook
+
+The `mempalace-autosave` hook fires on `agentStop` and automatically:
+1. Reviews the conversation for significant decisions, bug fixes, config changes
+2. Saves key context via `mempalace_add_drawer` (wing = workspace basename, room = topic)
+3. Writes a diary entry in AAAK format via `mempalace_diary_write`
+4. Skips saving if nothing significant happened
+
+This mirrors the Claude plugin's Stop hook behavior — no user action required.
+
+## Mining Projects
+
+When the user triggers the "MemPalace Mine" hook or asks to mine a project:
+1. Run `mempalace instructions mine` to get the latest CLI instructions
+2. Follow those instructions step by step
+3. Default to the current workspace directory if no path specified
+4. Report results (wings/rooms created, drawers indexed)
+
+Mining indexes project files with auto-classification. Use it at milestones, not continuously.
+
+## Dynamic Instructions
+
+For any MemPalace operation, the CLI provides up-to-date instructions:
+```bash
+mempalace instructions <command>
+```
+
+Where `<command>` is: `help`, `init`, `mine`, `search`, `status`.
+
+Use this when a user-triggered hook fires to get the latest guidance from the CLI itself, ensuring instructions never go stale.
+
 ## AAAK Awareness
 
 MemPalace uses AAAK (compressed memory format) for diary entries and some drawers. When you encounter AAAK-encoded content:

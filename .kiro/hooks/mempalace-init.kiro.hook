@@ -1,0 +1,12 @@
+{
+  "name": "MemPalace Init",
+  "version": "1.0.0",
+  "description": "Initialize MemPalace — install the package, create the palace database, and verify the MCP server works. Equivalent to /mempalace:init.",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "The user wants to initialize MemPalace. Follow these steps: 1) Check if mempalace is installed by running 'mempalace --version'. 2) If not installed, run 'pip install mempalace' (or suggest pipx if they prefer isolation). 3) Run 'mempalace init' to create the palace database. 4) Verify the MCP server can start by running 'python3 -m mempalace.mcp_server --help' or calling mempalace_status. 5) Confirm the palace path (default ~/.mempalace/palace/) exists. Report success or any errors encountered."
+  }
+}

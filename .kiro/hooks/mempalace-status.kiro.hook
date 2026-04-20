@@ -1,0 +1,12 @@
+{
+  "name": "MemPalace Status",
+  "version": "1.0.0",
+  "description": "Show palace overview — wings, rooms, drawer counts, and health. Equivalent to /mempalace:status.",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "The user wants a MemPalace status overview. Call mempalace_status to get the palace overview (total drawers, wings, rooms). Then call mempalace_list_wings to show all wings with their drawer counts. Present the results in a clean summary: total memories stored, list of wings with room counts, and any suggestions for the user (e.g., wings that haven't been updated recently, or empty rooms that could be cleaned up)."
+  }
+}

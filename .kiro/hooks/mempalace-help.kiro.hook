@@ -1,0 +1,12 @@
+{
+  "name": "MemPalace Help",
+  "version": "1.0.0",
+  "description": "Show available MemPalace tools, hooks, steering files, and architecture overview. Equivalent to /mempalace:help.",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "The user wants MemPalace help. Present a comprehensive overview:\n\n## Available Hooks (userTriggered buttons)\n- MemPalace Init — install and configure\n- MemPalace Mine — index projects/conversations\n- MemPalace Search — semantic search across memories\n- MemPalace Status — palace overview and health\n- Save to MemPalace — manually save session context\n- MemPalace Help — this help\n\n## Automatic Hooks\n- Auto Context (promptSubmit) — loads palace context on session start, searches memory on every message\n- Auto-Save (agentStop) — saves significant decisions when session ends\n\n## Key MCP Tools\n- mempalace_search — semantic search with wing/room filters\n- mempalace_add_drawer — save a memory (decisions, bugs, config)\n- mempalace_kg_query — knowledge graph entity relationships\n- mempalace_kg_timeline — chronological entity history\n- mempalace_diary_write/read — agent session diary in AAAK format\n\n## Architecture\n- Wings = projects/domains, Rooms = topics within wings, Drawers = individual memories\n- Backed by ChromaDB (semantic search) + SQLite (knowledge graph)\n- Palace path: ~/.mempalace/palace/ (override with MEMPALACE_PALACE_PATH)\n\nAlso mention the steering files: session-workflow.md and scope-setup.md for detailed guidance."
+  }
+}

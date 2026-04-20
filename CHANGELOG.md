@@ -5,14 +5,30 @@ Format based on [Keep a Changelog](https://keepachangelog.com/). Versioning foll
 
 ## [Unreleased]
 
-### Changed
-- Removed stale root-level files: `POWER.md`, `hooks.json`, `entities.json`, `mempalace.yaml`, `steering/`, `CHANGELOG.md`
-- Updated `install.sh` to copy from `powers/mempalace/` instead of deleted root files
-- Rewrote `README.md` to match current project state
-- Renamed power MCP server key from `mempalace` to `server` (avoids `power-mempalace-mempalace` naming)
+## [v0.0.3] — 2026-04-20
 
 ### Added
-- `update-readme` agent hook — auto-checks README freshness on agent stop
+- `mempalace-autosave` hook changed from `userTriggered` to `agentStop` — auto-saves session context when agent stops (mirrors Claude plugin's Stop hook)
+- `mempalace-init` hook (`userTriggered`) — install package, create palace, verify MCP server (mirrors `/mempalace:init`)
+- `mempalace-mine` hook (`userTriggered`) — index projects/conversations into palace with dynamic CLI instructions (mirrors `/mempalace:mine`)
+- `mempalace-status` hook (`userTriggered`) — palace overview with wing/room counts (mirrors `/mempalace:status`)
+- `mempalace-help` hook (`userTriggered`) — full architecture and tool reference (mirrors `/mempalace:help`)
+- `mine-workflow.md` steering file — guide for mining projects and conversations
+- Root `POWER.md` — required by Kiro's cached install path resolution at `~/.kiro/powers/installed/<name>/`
+
+### Changed
+- `POWER.md` rewritten with full 25+ tool reference, all hooks (automatic + user-triggered), dynamic instructions pattern, and mine workflow
+- `mempalace-usage.md` steering updated with session-end auto-save section, mining section, and dynamic instructions via `mempalace instructions <cmd>`
+- `mempalace-search` hook updated to use dynamic CLI instructions at runtime
+- `mempalace-auto-context` hook cleaned up with improved description
+
+### Fixed
+- POWER.md not found by `kiroPowers activate` — root cause: Kiro caches power files at install time into `~/.kiro/powers/installed/<name>/`, original install only had POWER.md nested under `powers/mempalace/`
+- MCP server entry in user config missing `disabled: false` and `autoApprove` list
+
+### Removed
+- Stale root-level files: `hooks.json`, `entities.json`, `mempalace.yaml`, `steering/`, old `CHANGELOG.md`
+- `update-readme` agent hook (replaced by comprehensive hook set)
 
 ## [v0.0.2] — 2026-04-17
 
