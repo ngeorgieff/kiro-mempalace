@@ -24,16 +24,19 @@ When the user references past work using phrases like:
 
 **You MUST call `mempalace_search` BEFORE answering.** Do not guess or hallucinate past context.
 
-### Search Best Practices
+### Search Best Practices — Token Optimization
 
-- **Always filter by wing when the workspace wing is known.** Wing+room filtering yields +34% recall compared to unfiltered search. Use `wing` parameter set to the current project name.
+- **Always filter by wing.** Unfiltered search returns irrelevant results from every wing, wasting tokens. Use `wing` parameter set to the current project name.
 - **Add room filter when the topic is clear.** If the user asks about "backend decisions", filter by room="decisions" or room="backend".
-- **Keep queries short and keyword-focused.** The `query` parameter is embedded for semantic search — use keywords, not full sentences.
+- **Keep queries short and keyword-focused.** The `query` parameter is embedded for semantic search — use 2-4 keywords, not full sentences.
+- **Set `max_distance` to 0.8** to cut low-relevance noise. Default 1.5 is too permissive.
+- **Set `limit` to 3** for most queries. Only use 5 if the first 3 aren't sufficient.
 - **Never run unfiltered search when a wing is known.** Always pass the wing parameter.
+- **Summarize results, don't echo them.** Extract the key facts from results and present concisely — never dump raw drawer content to the user.
 
 Example:
 ```
-mempalace_search(query="auth approach", wing="my-project", room="decisions")
+mempalace_search(query="auth approach", wing="my-project", room="decisions", limit=3, max_distance=0.8)
 ```
 
 ## After Significant Events — Propose Saving
