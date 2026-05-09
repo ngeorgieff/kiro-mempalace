@@ -15,6 +15,8 @@ On every new session (first message), immediately call these two tools to orient
 
 This gives you L0 (palace exists, rough size) and L1 (which projects/topics have memory). Use this to understand what the user has been working on.
 
+**Memory Protocol:** `mempalace_status` also returns the **Memory Protocol** — a short behavior guide the agent should internalize and follow throughout the session: search before claiming memory, say "let me check" when unsure, write a diary entry after sessions, and invalidate old facts when they change. Treat it as steering from the palace itself.
+
 **This is enforced by the `mempalace-auto-context` promptSubmit hook** — it fires on every message and reminds you to load context on the first message and search memory on subsequent ones.
 
 ## Proactive Memory Search — Every Message

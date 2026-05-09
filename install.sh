@@ -67,7 +67,8 @@ mkdir -p "${POWER_DIR}/steering"
 
 # Back up existing Power files before overwriting
 for f in "${POWER_DIR}/POWER.md" "${POWER_DIR}/mcp.json" \
-         "${POWER_DIR}/steering/scope-setup.md" "${POWER_DIR}/steering/session-workflow.md"; do
+         "${POWER_DIR}/steering/scope-setup.md" "${POWER_DIR}/steering/session-workflow.md" \
+         "${POWER_DIR}/steering/mine-workflow.md"; do
   backup_file "${f}"
 done
 
@@ -104,7 +105,32 @@ with open(config_path) as f:
 
 config.setdefault("mcpServers", {})["mempalace"] = {
     "command": "uvx",
-    "args": ["--from", "mempalace", "python", "-m", "mempalace.mcp_server"]
+    "args": ["--from", "mempalace", "python", "-m", "mempalace.mcp_server"],
+    "env": {},
+    "disabled": False,
+    "autoApprove": [
+        "mempalace_status",
+        "mempalace_list_wings",
+        "mempalace_list_rooms",
+        "mempalace_get_taxonomy",
+        "mempalace_search",
+        "mempalace_check_duplicate",
+        "mempalace_get_aaak_spec",
+        "mempalace_get_drawer",
+        "mempalace_list_drawers",
+        "mempalace_kg_query",
+        "mempalace_kg_timeline",
+        "mempalace_kg_stats",
+        "mempalace_traverse",
+        "mempalace_find_tunnels",
+        "mempalace_graph_stats",
+        "mempalace_list_tunnels",
+        "mempalace_follow_tunnels",
+        "mempalace_diary_read",
+        "mempalace_hook_settings",
+        "mempalace_memories_filed_away",
+        "mempalace_reconnect",
+    ],
 }
 
 with open(config_path, "w") as f:

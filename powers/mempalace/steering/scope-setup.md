@@ -23,17 +23,20 @@ How to configure MemPalace MCP registration scope — global vs workspace.
 
 ## Toggling Scope
 
-Use the provided script:
+Toggling scope is a manual edit: there is no script for this in the repo.
 
-```bash
-# Switch to global
-./scripts/mempalace-scope.sh global
+1. Open the **source** `mcp.json` (where the `mempalace` entry currently lives).
+2. Copy the entire `"mempalace": { ... }` block from `mcpServers`.
+3. Open the **target** `mcp.json` (the scope you want to move to, creating the file with `{ "mcpServers": {} }` if needed).
+4. Paste the `mempalace` block into the target's `mcpServers`, preserving all other server entries.
+5. Delete the `mempalace` block from the source `mcp.json`.
+6. Restart Kiro.
 
-# Switch to workspace
-./scripts/mempalace-scope.sh workspace
-```
+The two scope files are:
+- Global: `~/.kiro/settings/mcp.json`
+- Workspace: `.kiro/settings/mcp.json`
 
-The script merges the `mempalace` entry into the target config and removes it from the source, preserving all other MCP servers.
+Keep the `mempalace` entry in only one of them at a time.
 
 ## Manual Configuration
 
@@ -51,12 +54,24 @@ If you prefer to configure manually, add this to the appropriate `mcp.json`:
         "mempalace_status",
         "mempalace_list_wings",
         "mempalace_list_rooms",
-        "mempalace_search",
         "mempalace_get_taxonomy",
+        "mempalace_search",
+        "mempalace_check_duplicate",
         "mempalace_get_aaak_spec",
+        "mempalace_get_drawer",
+        "mempalace_list_drawers",
         "mempalace_kg_query",
         "mempalace_kg_timeline",
-        "mempalace_diary_read"
+        "mempalace_kg_stats",
+        "mempalace_traverse",
+        "mempalace_find_tunnels",
+        "mempalace_graph_stats",
+        "mempalace_list_tunnels",
+        "mempalace_follow_tunnels",
+        "mempalace_diary_read",
+        "mempalace_hook_settings",
+        "mempalace_memories_filed_away",
+        "mempalace_reconnect"
       ]
     }
   }

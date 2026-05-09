@@ -34,7 +34,7 @@ This power mirrors the [MemPalace Claude Code plugin](https://github.com/MemPala
 | `/mempalace:status` | MemPalace Status hook (userTriggered) |
 | `/mempalace:help` | MemPalace Help hook (userTriggered) |
 | SKILL.md (dynamic CLI delegation) | Hooks use `mempalace instructions <cmd>` |
-| MCP server (19+ tools) | Same MCP server, 28 tools auto-approved |
+| MCP server (19+ tools) | MCP server (29 tools, 21 auto-approved) |
 
 ---
 
@@ -135,22 +135,38 @@ Use the "MemPalace Mine" hook to index an entire project directory into the pala
 
 ---
 
-## MCP Tools (28 auto-approved)
+## MCP Tools (29 total, 21 auto-approved)
 
-### Palace Operations
+### Auto-Approved (read/safe)
+
+**Palace Operations**
 `mempalace_status` · `mempalace_list_wings` · `mempalace_list_rooms` · `mempalace_get_taxonomy`
 
-### Search & Storage
-`mempalace_search` · `mempalace_add_drawer` · `mempalace_get_drawer` · `mempalace_list_drawers` · `mempalace_update_drawer` · `mempalace_delete_drawer` · `mempalace_check_duplicate`
+**Search & Storage (read)**
+`mempalace_search` · `mempalace_check_duplicate` · `mempalace_get_drawer` · `mempalace_list_drawers`
 
-### Knowledge Graph
-`mempalace_kg_query` · `mempalace_kg_add` · `mempalace_kg_invalidate` · `mempalace_kg_timeline` · `mempalace_kg_stats`
+**Knowledge Graph (read)**
+`mempalace_kg_query` · `mempalace_kg_timeline` · `mempalace_kg_stats`
 
-### Tunnels (cross-wing connections)
-`mempalace_traverse` · `mempalace_find_tunnels` · `mempalace_graph_stats` · `mempalace_create_tunnel` · `mempalace_list_tunnels` · `mempalace_delete_tunnel` · `mempalace_follow_tunnels`
+**Navigation & Tunnels (read)**
+`mempalace_traverse` · `mempalace_find_tunnels` · `mempalace_graph_stats` · `mempalace_list_tunnels` · `mempalace_follow_tunnels`
 
-### Diary & Utilities
-`mempalace_diary_write` · `mempalace_diary_read` · `mempalace_get_aaak_spec` · `mempalace_hook_settings` · `mempalace_memories_filed_away` · `mempalace_reconnect`
+**Diary & Utilities**
+`mempalace_diary_read` · `mempalace_get_aaak_spec` · `mempalace_hook_settings` · `mempalace_memories_filed_away` · `mempalace_reconnect`
+
+### Requires Approval (write)
+
+**Storage (write)**
+`mempalace_add_drawer` · `mempalace_update_drawer` · `mempalace_delete_drawer`
+
+**Knowledge Graph (write)**
+`mempalace_kg_add` · `mempalace_kg_invalidate`
+
+**Tunnels (write)**
+`mempalace_create_tunnel` · `mempalace_delete_tunnel`
+
+**Diary (write)**
+`mempalace_diary_write`
 
 ---
 
@@ -169,12 +185,30 @@ mempalace init ~/.mempalace
     "mempalace": {
       "command": "uvx",
       "args": ["--from", "mempalace", "python", "-m", "mempalace.mcp_server"],
+      "env": {},
       "disabled": false,
       "autoApprove": [
-        "mempalace_status", "mempalace_list_wings", "mempalace_list_rooms",
-        "mempalace_search", "mempalace_add_drawer", "mempalace_get_drawer",
-        "mempalace_kg_query", "mempalace_kg_add", "mempalace_kg_timeline",
-        "mempalace_diary_write", "mempalace_diary_read"
+        "mempalace_status",
+        "mempalace_list_wings",
+        "mempalace_list_rooms",
+        "mempalace_get_taxonomy",
+        "mempalace_search",
+        "mempalace_check_duplicate",
+        "mempalace_get_aaak_spec",
+        "mempalace_get_drawer",
+        "mempalace_list_drawers",
+        "mempalace_kg_query",
+        "mempalace_kg_timeline",
+        "mempalace_kg_stats",
+        "mempalace_traverse",
+        "mempalace_find_tunnels",
+        "mempalace_graph_stats",
+        "mempalace_list_tunnels",
+        "mempalace_follow_tunnels",
+        "mempalace_diary_read",
+        "mempalace_hook_settings",
+        "mempalace_memories_filed_away",
+        "mempalace_reconnect"
       ]
     }
   }

@@ -76,11 +76,7 @@ Two mutually exclusive scopes for MCP registration:
 | Global | `~/.kiro/settings/mcp.json` | All Kiro workspaces |
 | Workspace | `.kiro/settings/mcp.json` | Current project only |
 
-**Toggle mechanism:** `scripts/mempalace-scope.sh [global|workspace]`
-- Reads current config from source scope
-- Merges `mempalace` entry into target scope
-- Removes `mempalace` entry from source scope
-- Preserves all other `mcpServers` entries in both files
+**Toggle mechanism:** Manual edit (no script in repo). Move the `mempalace` entry between global (`~/.kiro/settings/mcp.json`) and workspace (`.kiro/settings/mcp.json`) `mcpServers` maps. See `.kiro/steering/mempalace-scope.md` for step-by-step instructions.
 
 ### 3. Steering Rules
 

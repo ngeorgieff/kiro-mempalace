@@ -5,6 +5,28 @@ Format based on [Keep a Changelog](https://keepachangelog.com/). Versioning foll
 
 ## [Unreleased]
 
+### Security
+- Removed write tools from `autoApprove` (security fix): `mempalace_add_drawer`, `mempalace_update_drawer`, `mempalace_delete_drawer`, `mempalace_kg_add`, `mempalace_kg_invalidate`, `mempalace_create_tunnel`, `mempalace_delete_tunnel`, `mempalace_diary_write` now always require user approval.
+- Added CI check in `validate-pr.yml` that fails the build if any write tool appears in the `mempalace` `autoApprove` list.
+
+### Changed
+- Aligned MCP config with official MemPalace docs: 29 total tools documented, 21 read/safe tools auto-approved, 8 write tools require user approval.
+- Updated `install.sh` to register the full MCP entry (`disabled: false`, `env: {}`, full `autoApprove` array of 21 tools) instead of a minimal `command`/`args` stub.
+- Rewrote `install.ps1` to copy power files from the correct source paths (`powers/mempalace/POWER.md`, `powers/mempalace/mcp.json`, `powers/mempalace/steering/*.md`) and to register the full MCP entry including `autoApprove`.
+- Fixed backup file lists in both installers to reference the actual steering files (`scope-setup.md`, `session-workflow.md`, `mine-workflow.md`).
+- README "Manual setup" MCP snippet and "MCP Tools" section now reflect the 29-tool / 21-auto-approved split.
+- README "Claude Plugin Parity" table updated: `MCP server (29 tools, 21 auto-approved)`.
+- Steering files (`.kiro/steering/mempalace-scope.md`, `powers/mempalace/steering/scope-setup.md`) now use the canonical `uvx --from mempalace python -m mempalace.mcp_server` command and the full 21-tool `autoApprove` list.
+
+### Added
+- Memory Protocol section in both `POWER.md` files and `.kiro/steering/mempalace-usage.md`, documenting that `mempalace_status` returns a behavior guide the AI internalizes (search before claiming memory, say "let me check" when unsure, write diary entries, invalidate facts when they change).
+- Documented `--palace <path>` CLI flag as an alternative to the `MEMPALACE_PALACE_PATH` env var.
+- Framing in `mempalace-autosave.kiro.hook` noting that this single `agentStop` hook is Kiro's equivalent of both the official Save Hook (Stop event) and PreCompact Hook.
+- `mempalace-init.kiro.hook` now recommends `uv tool install mempalace` (matching the install scripts and the upstream Claude plugin), mentions the `mempalace-mcp` binary, and keeps `pip install --user mempalace` as a fallback.
+
+### Removed
+- References to the non-existent `scripts/mempalace-scope.sh` in `.kiro/steering/mempalace-scope.md` and `powers/mempalace/steering/scope-setup.md`. Replaced with manual instructions for moving the `mempalace` entry between global and workspace `mcp.json` files.
+
 ## [v0.0.3] — 2026-04-20
 
 ### Added

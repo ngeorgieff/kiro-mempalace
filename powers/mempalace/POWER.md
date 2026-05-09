@@ -12,7 +12,11 @@ author: "MemPalace Community"
 
 MemPalace is a local-first AI memory system that gives Kiro agents persistent memory across sessions. It stores conversations, decisions, and knowledge in a structured palace of wings (projects), rooms (topics), and drawers (individual memories), backed by ChromaDB for semantic search and SQLite for the knowledge graph.
 
-This power integrates MemPalace's 19+ MCP tools into Kiro with proper steering, automatic hooks, and user-triggered commands — the agent knows when to search memory, when to save context, and how to read the compressed AAAK diary format without bothering you.
+This power integrates MemPalace's 29 MCP tools into Kiro with proper steering, automatic hooks, and user-triggered commands. The agent knows when to search memory, when to save context, and how to read the compressed AAAK diary format without bothering you.
+
+### Memory Protocol
+
+When the agent first calls `mempalace_status`, it receives the **Memory Protocol**: a behavior guide that teaches it to search before claiming memory, say "let me check" when unsure, write diary entries after sessions, and invalidate facts when they change. This is what turns storage into memory: the AI learns to verify before speaking.
 
 ## Available Steering Files
 
@@ -62,6 +66,8 @@ To use a custom path, edit the `env` section in the MCP config:
   "MEMPALACE_PALACE_PATH": "/path/to/your/palace"
 }
 ```
+
+Alternatively, the server also accepts a `--palace <path>` CLI flag. For example, the args array can be set to `["--from", "mempalace", "python", "-m", "mempalace.mcp_server", "--palace", "/path/to/your/palace"]`.
 
 ## Hooks
 
@@ -196,41 +202,46 @@ Use lowercase, hyphenated names for consistency.
 
 ## Tool Reference
 
-### Auto-Approved (read-only)
+MemPalace exposes 29 MCP tools. 21 read/safe tools are auto-approved; the 8 write tools always require user approval.
+
+### Auto-Approved (read/safe)
 
 | Tool | Purpose |
 |------|---------|
-| `mempalace_status` | Palace overview — drawers, wings, rooms |
+| `mempalace_status` | Palace overview plus AAAK spec and Memory Protocol |
 | `mempalace_list_wings` | All wings with drawer counts |
 | `mempalace_list_rooms` | Rooms within a wing |
-| `mempalace_search` | Semantic search across drawers |
-| `mempalace_get_taxonomy` | Full wing → room → drawer structure |
+| `mempalace_get_taxonomy` | Full wing -> room -> drawer structure |
+| `mempalace_search` | Semantic search with wing/room filters |
+| `mempalace_check_duplicate` | Check if content already exists before filing |
 | `mempalace_get_aaak_spec` | AAAK compressed format reference |
-| `mempalace_kg_query` | Knowledge graph entity relationships |
-| `mempalace_kg_timeline` | Chronological entity history |
-| `mempalace_diary_read` | Read agent diary entries |
-| `mempalace_kg_add` | Record new entity relationships |
-| `mempalace_kg_invalidate` | Mark facts as no longer true |
-| `mempalace_diary_write` | Write agent session diary |
-| `mempalace_add_drawer` | Save decisions, context, exchanges |
 | `mempalace_get_drawer` | Retrieve a specific drawer by ID |
-| `mempalace_list_drawers` | List drawers in a room |
-| `mempalace_update_drawer` | Update existing drawer content |
-| `mempalace_check_duplicate` | Check if content already exists |
-| `mempalace_hook_settings` | View/configure hook settings |
-| `mempalace_traverse` | Traverse palace structure |
-| `mempalace_find_tunnels` | Find connections between drawers |
-| `mempalace_graph_stats` | Knowledge graph statistics |
-| `mempalace_create_tunnel` | Create connections between drawers |
-| `mempalace_list_tunnels` | List existing tunnels |
-| `mempalace_delete_tunnel` | Remove a tunnel |
-| `mempalace_follow_tunnels` | Navigate through tunnels |
+| `mempalace_list_drawers` | List drawers with pagination |
+| `mempalace_kg_query` | Knowledge graph entity relationships (read) |
+| `mempalace_kg_timeline` | Chronological entity history |
+| `mempalace_kg_stats` | Knowledge graph overview |
+| `mempalace_traverse` | Walk the graph from a room across wings |
+| `mempalace_find_tunnels` | Find rooms bridging two wings |
+| `mempalace_graph_stats` | Graph connectivity overview |
+| `mempalace_list_tunnels` | List existing explicit tunnels |
+| `mempalace_follow_tunnels` | Follow tunnels out from a room |
+| `mempalace_diary_read` | Read agent diary entries |
+| `mempalace_hook_settings` | Get or set hook behavior |
+| `mempalace_memories_filed_away` | Check whether the last checkpoint was saved |
+| `mempalace_reconnect` | Force reconnect to the database |
 
 ### Requires Approval (write)
 
 | Tool | Purpose |
 |------|---------|
-| `mempalace_delete_drawer` | Remove incorrect/outdated entries |
+| `mempalace_add_drawer` | File verbatim content as a new drawer |
+| `mempalace_update_drawer` | Update drawer content or metadata |
+| `mempalace_delete_drawer` | Remove a drawer by ID |
+| `mempalace_kg_add` | Add facts to the knowledge graph |
+| `mempalace_kg_invalidate` | Mark facts as ended |
+| `mempalace_create_tunnel` | Create an explicit cross-wing tunnel |
+| `mempalace_delete_tunnel` | Delete an explicit tunnel |
+| `mempalace_diary_write` | Write an AAAK-format diary entry |
 
 ## Troubleshooting
 

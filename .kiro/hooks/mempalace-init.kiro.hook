@@ -7,6 +7,6 @@
   },
   "then": {
     "type": "askAgent",
-    "prompt": "The user wants to initialize MemPalace. Follow these steps: 1) Check if mempalace is installed by running 'mempalace --version'. 2) If not installed, run 'pip install mempalace' (or suggest pipx if they prefer isolation). 3) Run 'mempalace init' to create the palace database. 4) Verify the MCP server can start by running 'python3 -m mempalace.mcp_server --help' or calling mempalace_status. 5) Confirm the palace path (default ~/.mempalace/palace/) exists. Report success or any errors encountered."
+    "prompt": "The user wants to initialize MemPalace. Follow these steps: 1) Check if mempalace is installed by running 'mempalace --version'. 2) If not installed, recommend 'uv tool install mempalace' (this is the install path used by the official MemPalace Claude plugin and this power's install scripts; it also provides the 'mempalace-mcp' console script). Fall back to 'pip install --user mempalace' if uv is unavailable. 3) Run 'mempalace init' to create the palace database. 4) Verify the MCP server can start by running 'python3 -m mempalace.mcp_server --help' or calling mempalace_status. 5) Confirm the palace path (default ~/.mempalace/palace/) exists. Report success or any errors encountered."
   }
 }

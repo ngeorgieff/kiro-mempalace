@@ -68,18 +68,21 @@ Info "Installing Kiro Power to $POWER_DIR..."
 New-Item -ItemType Directory -Force -Path "$POWER_DIR\steering" | Out-Null
 
 # Back up existing Power files before overwriting
-foreach ($f in @("$POWER_DIR\POWER.md", "$POWER_DIR\mcp.json", "$POWER_DIR\hooks.json",
-                 "$POWER_DIR\steering\on-session-start.md", "$POWER_DIR\steering\on-session-end.md")) {
+foreach ($f in @("$POWER_DIR\POWER.md", "$POWER_DIR\mcp.json",
+                 "$POWER_DIR\steering\scope-setup.md",
+                 "$POWER_DIR\steering\session-workflow.md",
+                 "$POWER_DIR\steering\mine-workflow.md")) {
     Backup-File $f
 }
 
-Copy-Item "$SCRIPT_DIR\POWER.md"                     "$POWER_DIR\POWER.md"         -Force
-Copy-Item "$SCRIPT_DIR\mcp.json"                     "$POWER_DIR\mcp.json"         -Force
-Copy-Item "$SCRIPT_DIR\hooks.json"                   "$POWER_DIR\hooks.json"       -Force
-Copy-Item "$SCRIPT_DIR\steering\on-session-start.md" "$POWER_DIR\steering\on-session-start.md" -Force
-Copy-Item "$SCRIPT_DIR\steering\on-session-end.md"   "$POWER_DIR\steering\on-session-end.md"   -Force
+Copy-Item "$SCRIPT_DIR\powers\mempalace\POWER.md"  "$POWER_DIR\POWER.md" -Force
+Copy-Item "$SCRIPT_DIR\powers\mempalace\mcp.json"  "$POWER_DIR\mcp.json" -Force
 
-# Patch python path into Power mcp.json — not needed, mcp.json uses uvx
+if (Test-Path "$SCRIPT_DIR\powers\mempalace\steering") {
+    Get-ChildItem "$SCRIPT_DIR\powers\mempalace\steering\*.md" | ForEach-Object {
+        Copy-Item $_.FullName "$POWER_DIR\steering\$($_.Name)" -Force
+    }
+}
 
 # ── 5. Register in global Kiro MCP config ────────────────────────────────────
 $kiroSettingsDir = Split-Path $KIRO_MCP_CONFIG
@@ -96,10 +99,37 @@ $config = Get-Content $KIRO_MCP_CONFIG | ConvertFrom-Json
 if (-not $config.mcpServers) { $config | Add-Member -NotePropertyName mcpServers -NotePropertyValue @{} }
 
 # Use uvx so the config is portable across machines — no hardcoded paths.
-$config.mcpServers | Add-Member -NotePropertyName mempalace -NotePropertyValue @{
-    command = "uvx"
-    args    = @("--from", "mempalace", "python", "-m", "mempalace.mcp_server")
-} -Force
+$autoApprove = @(
+    "mempalace_status",
+    "mempalace_list_wings",
+    "mempalace_list_rooms",
+    "mempalace_get_taxonomy",
+    "mempalace_search",
+    "mempalace_check_duplicate",
+    "mempalace_get_aaak_spec",
+    "mempalace_get_drawer",
+    "mempalace_list_drawers",
+    "mempalace_kg_query",
+    "mempalace_kg_timeline",
+    "mempalace_kg_stats",
+    "mempalace_traverse",
+    "mempalace_find_tunnels",
+    "mempalace_graph_stats",
+    "mempalace_list_tunnels",
+    "mempalace_follow_tunnels",
+    "mempalace_diary_read",
+    "mempalace_hook_settings",
+    "mempalace_memories_filed_away",
+    "mempalace_reconnect"
+)
+
+$config.mcpServers | Add-Member -NotePropertyName mempalace -NotePropertyValue ([ordered]@{
+    command      = "uvx"
+    args         = @("--from", "mempalace", "python", "-m", "mempalace.mcp_server")
+    env          = @{}
+    disabled     = $false
+    autoApprove  = $autoApprove
+}) -Force
 
 $config | ConvertTo-Json -Depth 10 | Set-Content $KIRO_MCP_CONFIG
 Info "Global MCP config updated: $KIRO_MCP_CONFIG"
