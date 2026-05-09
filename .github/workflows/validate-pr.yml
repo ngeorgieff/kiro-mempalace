@@ -31,6 +31,29 @@ jobs:
             fi
           done
 
+      - name: Check autoApprove does not include write tools
+        run: |
+          python3 -c "
+          import json, sys
+          write_tools = {
+              'mempalace_add_drawer',
+              'mempalace_update_drawer',
+              'mempalace_delete_drawer',
+              'mempalace_kg_add',
+              'mempalace_kg_invalidate',
+              'mempalace_create_tunnel',
+              'mempalace_delete_tunnel',
+              'mempalace_diary_write',
+          }
+          config = json.load(open('powers/mempalace/mcp.json'))
+          auto = set(config.get('mcpServers', {}).get('mempalace', {}).get('autoApprove', []))
+          leaked = sorted(auto & write_tools)
+          if leaked:
+              print('❌ Write tools must never be auto-approved:', leaked)
+              sys.exit(1)
+          print('✅ autoApprove contains no write tools')
+          "
+
       - name: Validate POWER.md frontmatter
         run: |
           python3 -c "

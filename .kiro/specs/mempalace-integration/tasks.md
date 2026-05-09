@@ -27,8 +27,8 @@
 
 ### Phase 5: Setup Scripts
 - [ ] Task 16: Create `scripts/setup-mempalace.sh` (idempotent installer)
-- [ ] Task 17: Create `scripts/mempalace-scope.sh` (scope toggle)
-- [ ] Task 18: `chmod +x` both scripts
+- [ ] Task 17: Document manual scope toggle in steering (no script; move `mempalace` entry between global/workspace `mcp.json` by hand)
+- [ ] Task 18: `chmod +x` setup script
 - [ ] Task 19: Run `scripts/setup-mempalace.sh --dry-run` and verify exit 0
 
 ### Phase 6: Verification
